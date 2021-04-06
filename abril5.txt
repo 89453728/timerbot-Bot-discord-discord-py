@@ -1,0 +1,15 @@
+MOORNING
+
+    1.Session: Study the summary of radiocomunication theory
+    2.Session: Make the excercises of the previus subject
+    3.Session: Study the summary of wave propagation 
+
+AFTERNOON
+
+    1.Session: Make exercises of the previus subject
+    2.Session: Clean my house
+    3.Session: Read book: "Antenas" of Angel Cardama Aznar
+
+NIGHT
+
+    1.Session: check some python code errors and resolve it
