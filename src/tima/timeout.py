@@ -3,7 +3,7 @@
 import time
 import threading 
 
-INTRV = 1 # en segundos
+INTRV = 60 # en segundos
 
 class timerbot:
     def __init__(self):
