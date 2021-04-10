@@ -13,24 +13,41 @@ from tima.timeout import timerbot
 import threading
 import os
 import asyncio
-import async_to_sync
+import time
 
 file_name = "temporizators.tp"
 FINAL = "SE ACABO EL TIEMPO DE ESTUDIO, RELAJATE UN RATO CAMPEON!"
 STEP = "QUEDAN MINUTOS, ANIMO!"
+awaitToExec = 0
 
 ctxGlobal = 0
 
-async def timOut(data):
+def timOut (args):
+    global awaitToExec
+    awaitToExec = 1
+
+async def sendMsg(data):
+    print("sended")
     embed = discord.Embed(title = data["final"], description = "Ya es la hora!",
-    color=discord.Color.red())
+    color=discord.Color.green())
 
     embed.add_field(name="Chic@s ya ha pasado el tiempo!!", value=data["step"])
     embed.set_image(url="http://ohmycool.com/blog/wp-content/uploads/hora-de-la-aventura.jpg")
     await ctxGlobal.send(embed=embed)
-  
+
+async def check ():
+    print("check is running")
+    while 1:
+        global awaitToExec
+        print (">> check " + str(awaitToExec))
+        if (awaitToExec == 1):
+            await sendMsg({"step":STEP,"final":FINAL})
+            awaitToExec = 0
+        time.sleep(10)
+
 temporizers = []
 temporizators = loadTimerbots(file_name)
+
 def timerBotAdder():
     for i in range(0,len(temporizators)):
         acumulator = 0
@@ -61,6 +78,7 @@ async def sum(ctx, numOne: float, numTwo: float): # suma de dos numeros
 async def init(ctx):
     global ctxGlobal
     ctxGlobal = ctx
+    await check()
 
 @bot.command() # comando bot (informacion del bot) basicamente elaborar un mensaje con decoracion de texto
 async def info(ctx):
@@ -88,7 +106,8 @@ async def img2(ctx):
     await ctx.send(embed=embed)
 @bot.command() # anadir un nuevo temporizador (con escalas)
 async def tempo(ctx,cmd):
-    ctxGlobal = ctx
+    await init()
+    global temporizers
     f = open(file_name,"a")
     f.write("\n" + cmd)
     f.close()
@@ -123,18 +142,20 @@ async def showtempo(ctx,name):
 
 @bot.command()
 async def start(ctx,name:str):
+    global temporizers
     for i in range (0,len(temporizers)):
         if temporizers[i]["name"] == name:
-            await temporizers[i]["timerbot"].steamOFF()
+            temporizers[i]["timerbot"].steamOFF()
             temporizers[i]["timerbot"].clearAllTimeoutCount()
             temporizers[i]["timerbot"].enableAllTimeout()
-            await temporizers[i]["timerbot"].steamON()
+            temporizers[i]["timerbot"].steamON()
 
 @bot.command()
 async def stop(ctx,name:str):
+    global temporizers
     for i in range (0,len(temporizers)):
         if temporizers[i]["name"] == name:
-            await temporizers[i]["timerbot"].steamOFF()
+            temporizers[i]["timerbot"].steamOFF()
             temporizers[i]["timerbot"].clearAllTimeoutCount()
             temporizers[i]["timerbot"].dissableAllTimeout()
 
@@ -167,5 +188,6 @@ async def leave(ctx):
 async def on_ready():
     # await bot.change_presence(activity = discord.Streaming(name = "tutorials", url = "https://www.twitch.tv/acuntname")) # cambiar estado del bot
     print("mi bot is ready")
+
 
 bot.run(token) # ejecucion del bot con el token

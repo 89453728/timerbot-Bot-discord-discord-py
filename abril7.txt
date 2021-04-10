@@ -1,0 +1,15 @@
+MOORNING
+
+    1.Session: Listen to digital comunication class
+    2.Session: Go make laboratory practice of randomized signals
+    3.Session: Listen  to waves propagation class
+
+AFTERNOON
+
+    1.Session: Listen to transport units and internet protocols
+    2.Session: organize and do exercises of random signal (2 and 3 excercises relations)
+    3.Session: became doing exercises.
+
+NIGHT
+
+    1.Session: commit some issues checked on github.
