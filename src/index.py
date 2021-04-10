@@ -61,7 +61,7 @@ def timerBotAdder():
 
 timerBotAdder()
 
-token = "ODI3NjEwODQ2MTg0MjEwNDUy.YGdiqQ.nnm2-WgfEMxgSfpJPz-0FUSuAAE"
+token = "token"
 
 # command_prefix es el prefijo de los comandos
 bot = commands.Bot(command_prefix = "$", description = "command help")
