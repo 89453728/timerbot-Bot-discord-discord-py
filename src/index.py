@@ -26,10 +26,21 @@ STEP2 = "APROVECHA AL MAXIMO LA SESION!"
 URL2 = "https://img.ecartelera.com/noticias/fotos/57200/57221/1.jpg"
 URL1 = "http://ohmycool.com/blog/wp-content/uploads/hora-de-la-aventura.jpg"
 
+SOUND = "nuclear.mp3"
+
 awaitToExec = 0
 mesgArg = {"step":STEP1,"final":FINAL1,"url":URL1}
 ctxGlobal = 0
 
+async def play(voice_audio):
+    global ctxGlobal
+    guild = ctxGlobal.guild 
+    voice_client: discord.VoiceClient = discord.utils.get(bot.voice_clients, guild = guild)
+    audio_source = discord.FFmpegPCMAudio(voice_audio)
+    await voice_client.voice_connect()
+    if not voice_client.is_playing():
+        voice_client.play(audio_source,after=None)
+    await voice_client.voice_connect()
 
 def timOut (args):
     global awaitToExec
@@ -58,7 +69,8 @@ async def check ():
             mesgArg["final"] = FINAL1
             mesgArg["url"] = URL1
         awaitToExec = 0
-    await asyncio.sleep(10)
+        await play(SOUND)
+    await asyncio.sleep(2)
     await check()
 
 temporizers = []
@@ -81,7 +93,7 @@ def timerBotAdder():
 
 timerBotAdder()
 
-token = "t"
+token = ""
 
 # command_prefix es el prefijo de los comandos
 bot = commands.Bot(command_prefix = "$", description = "command help")
@@ -95,36 +107,27 @@ async def ping(ctx): # comando ping
 async def init(ctx):
     global ctxGlobal
     ctxGlobal = ctx
-    await check()
 
 @bot.command() # comando bot (informacion del bot) basicamente elaborar un mensaje con decoracion de texto
 async def info(ctx):
-    embed = discord.Embed(title = f"{ctx.guild.name}", description = "Lorem Ipsum", timestamp = datetime.datetime.utcnow(),
-    color=discord.Color.red())
-    embed.add_field(name="server created at",value=f"{ctx.guild.created_at}")
-    embed.add_field(name="Server owner", value=f"{ctx.guild.owner}")
-    embed.add_field(name="server region",value=f"{ctx.guild.region}")
-    embed.add_field(name="server ID",value=f"{ctx.guild.id}")
-    embed.set_thumbnail(url="https://miro.medium.com/max/1400/1*FvnpdnrTSQZc_uAGP0GMWg.png")
-    await ctx.send(embed = embed)
-
-@bot.command()
-async def img1(ctx):
-    embed = discord.Embed(title="imagen 1",color=discord.Color.purple())
-    embed.set_image(url="https://miro.medium.com/max/1400/1*FvnpdnrTSQZc_uAGP0GMWg.png")
-    embed.add_field(name="imagen 1",value="Esta es la imagen uno del bot")
+    embed=discord.Embed(title="Manual de Comandos", description="aqui se describe brevemente el uso de los distintos comandos. Los comandos vienen predecidos del simbolo $", color=0x6272c6)
+    embed.add_field(name="$tempo nombre>10:5: ... :14>sonido", value="añadir un temporizador a la lista de temporizadores. Este se añade sin ser activado. nombre es el nombre que quieres darle para distinguirlo del resto, los tiempos son intervalos en los que ira alternando entre estudio y trabajo y el sonido por ahora no es funcional", inline=False)
+    embed.add_field(name="$rmtempo nombre", value="borrar el temporizador nombre de tu lista de temporizadores", inline=False)
+    embed.add_field(name="$info", value="ver este mensaje", inline=False)
+    embed.add_field(name="$join", value="unirse a un canal de voz (en el que estas incorporado)", inline=False)
+    embed.add_field(name="$leave", value="salir del canal de voz", inline=False)
+    embed.add_field(name="$start nombre", value="inicia el temporizador de la lista de temporizadores que se llama nombre", inline=False)
+    embed.add_field(name="$stop nombre", value="apaga el temporizador de la lista de temporizadores que se llama nombre", inline=False)
+    embed.add_field(name="$showtempo nombre", value="muestra la configuracion del temporizador nombre", inline=False)
+    embed.add_field(name="$showalltempo", value="muestra todos los temporizadores", inline=False)
+    embed.add_field(name="$init", value="comando necesario para iniciar el temporizador", inline=False)
     await ctx.send(embed=embed)
 
-@bot.command()
-async def img2(ctx):
-    embed = discord.Embed(title="imagen 2",color=discord.Color.purple())
-    embed.set_image(url="https://i.pinimg.com/originals/66/89/dc/6689dc331be27e66349ce9a4d15ddff3.gif")
-    embed.add_field(name="imagen 2",value="Esta es una imagen del bot")
-    await ctx.send(embed=embed)
 @bot.command() # anadir un nuevo temporizador (con escalas)
 async def tempo(ctx,cmd):
     global temporizers
     f = open(file_name,"a")
+    print (temporizers)
     if len(temporizers) > 0:
         f.write("\n" + cmd)
     else:

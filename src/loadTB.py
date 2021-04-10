@@ -5,7 +5,7 @@ def loadTimerbots(file_name):
     f.close()
     tmp = []
     
-    if (len(tmp) > 1):
+    if (len(bruteText) > 1):
         tmp = bruteText.split("\n")
     else:
         tmp = []
