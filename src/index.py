@@ -11,10 +11,11 @@ from cmd import cmdParse
 from loadTB import loadTimerbots
 from tima.timeout import timerbot
 import threading
-import os
 import asyncio
 import time
+import sys 
 
+sys.setrecursionlimit(6000)
 file_name = "temporizators.tp"
 
 FINAL1 = "SE ACABO EL TIEMPO DE TRABAJO, RELAJATE UN RATO CAMPEON!"
@@ -26,7 +27,7 @@ STEP2 = "APROVECHA AL MAXIMO LA SESION!"
 URL2 = "https://img.ecartelera.com/noticias/fotos/57200/57221/1.jpg"
 URL1 = "http://ohmycool.com/blog/wp-content/uploads/hora-de-la-aventura.jpg"
 
-SOUND = "nuclear.mp3"
+SOUND = "milei.wav"
 
 awaitToExec = 0
 mesgArg = {"step":STEP1,"final":FINAL1,"url":URL1}
@@ -70,7 +71,7 @@ async def check ():
             mesgArg["url"] = URL1
         awaitToExec = 0
         await play(SOUND)
-    await asyncio.sleep(2)
+    await asyncio.sleep(10)
     await check()
 
 temporizers = []
@@ -93,7 +94,7 @@ def timerBotAdder():
 
 timerBotAdder()
 
-token = ""
+token = "ODI3NjEwODQ2MTg0MjEwNDUy.YGdiqQ.FvkyLbOgj3Xh8lrPXhKJDVRYLCo"
 
 # command_prefix es el prefijo de los comandos
 bot = commands.Bot(command_prefix = "$", description = "command help")
@@ -229,7 +230,7 @@ async def showalltempo(ctx):
     
     if len(bruteText) > 0:
         for i in range(0,len(r)):
-            embed.add_field(name="nombre: " + r[i]["name"], value=r[i]["temp"])
+            embed.add_field(name="nombre: " + r[i]["name"], value=r[i]["temp"], inline=False)
     else:
         embed.add_field(name="No hay temporizadores disponibles " , value="puedes añadir temporizadores con el comando: $tempo nombre_temporizador>intervalo1:intervalo2...>sonido.mp3 (los sonidos todavia no estan disponibles)")
 
