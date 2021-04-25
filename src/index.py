@@ -27,7 +27,7 @@ STEP2 = "APROVECHA AL MAXIMO LA SESION!"
 URL2 = "https://img.ecartelera.com/noticias/fotos/57200/57221/1.jpg"
 URL1 = "http://ohmycool.com/blog/wp-content/uploads/hora-de-la-aventura.jpg"
 
-SOUND = "milei.wav"
+SOUND = "1234.wav"
 
 awaitToExec = 0
 mesgArg = {"step":STEP1,"final":FINAL1,"url":URL1}
@@ -94,23 +94,23 @@ def timerBotAdder():
 
 timerBotAdder()
 
-token = "ODI3NjEwODQ2MTg0MjEwNDUy.YGdiqQ.FvkyLbOgj3Xh8lrPXhKJDVRYLCo"
+token = "ODI3NjEwODQ2MTg0MjEwNDUy.YGdiqQ.HyLjFT_NHfHOPFi_derg2X8VMw8"
 
 # command_prefix es el prefijo de los comandos
 bot = commands.Bot(command_prefix = "$", description = "command help")
 
 @bot.command() # comando bot (ping pong)
 async def ping(ctx): # comando ping
+    global ctxGlobal
+    ctxGlobal = ctx
     await ctx.send("pong")
 
 
-@bot.command()
-async def init(ctx):
-    global ctxGlobal
-    ctxGlobal = ctx
 
 @bot.command() # comando bot (informacion del bot) basicamente elaborar un mensaje con decoracion de texto
 async def info(ctx):
+    global ctxGlobal
+    ctxGlobal = ctx
     embed=discord.Embed(title="Manual de Comandos", description="aqui se describe brevemente el uso de los distintos comandos. Los comandos vienen predecidos del simbolo $", color=0x6272c6)
     embed.add_field(name="$tempo nombre>10:5: ... :14>sonido", value="añadir un temporizador a la lista de temporizadores. Este se añade sin ser activado. nombre es el nombre que quieres darle para distinguirlo del resto, los tiempos son intervalos en los que ira alternando entre estudio y trabajo y el sonido por ahora no es funcional", inline=False)
     embed.add_field(name="$rmtempo nombre", value="borrar el temporizador nombre de tu lista de temporizadores", inline=False)
@@ -121,11 +121,12 @@ async def info(ctx):
     embed.add_field(name="$stop nombre", value="apaga el temporizador de la lista de temporizadores que se llama nombre", inline=False)
     embed.add_field(name="$showtempo nombre", value="muestra la configuracion del temporizador nombre", inline=False)
     embed.add_field(name="$showalltempo", value="muestra todos los temporizadores", inline=False)
-    embed.add_field(name="$init", value="comando necesario para iniciar el temporizador", inline=False)
     await ctx.send(embed=embed)
 
 @bot.command() # anadir un nuevo temporizador (con escalas)
 async def tempo(ctx,cmd):
+    global ctxGlobal
+    ctxGlobal = ctx
     global temporizers
     f = open(file_name,"a")
     print (temporizers)
@@ -146,6 +147,8 @@ async def tempo(ctx,cmd):
 
 @bot.command()
 async def rmtempo(ctx,name):
+    global ctxGlobal
+    ctxGlobal = ctx
     global temporizers
     global temporizators
     global file_name
@@ -177,6 +180,8 @@ async def rmtempo(ctx,name):
 
 @bot.command()
 async def showtempo(ctx,name):
+    global ctxGlobal
+    ctxGlobal = ctx
     f = open(file_name,"r")
     bruteText = f.read()
     f.close()
@@ -196,6 +201,8 @@ async def showtempo(ctx,name):
 
 @bot.command()
 async def start(ctx,name:str):
+    global ctxGlobal
+    ctxGlobal = ctx
     global temporizers
     for i in range (0,len(temporizers)):
         if temporizers[i]["name"] == name:
@@ -207,6 +214,8 @@ async def start(ctx,name:str):
 
 @bot.command()
 async def stop(ctx,name:str):
+    global ctxGlobal
+    ctxGlobal = ctx
     global temporizers
     for i in range (0,len(temporizers)):
         if temporizers[i]["name"] == name:
@@ -216,6 +225,8 @@ async def stop(ctx,name:str):
 
 @bot.command()
 async def showalltempo(ctx):
+    global ctxGlobal
+    ctxGlobal = ctx
     f = open(file_name,"r")
     bruteText = f.read()
     f.close()
@@ -238,10 +249,14 @@ async def showalltempo(ctx):
 
 @bot.command() # conexion a una sala de voz
 async def join(ctx):
+    global ctxGlobal
+    ctxGlobal = ctx
     channel = ctx.author.voice.channel
     await channel.connect() 
 @bot.command() # salir de la sala de voz
 async def leave(ctx):
+    global ctxGlobal
+    ctxGlobal = ctx
     await ctx.voice_client.disconnect()
 # Events
 @bot.event # evento de bot en disposicion
